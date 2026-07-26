@@ -9,12 +9,11 @@ def call(String imageName, String dockerHubRepo) {
     ]) {
 
         sh """
-            echo "\$DOCKER_PASSWORD" | docker login -u "\$DOCKER_USERNAME" --password-stdin
-
             docker tag ${imageName} \$DOCKER_USERNAME/${dockerHubRepo}:latest
 
             docker push \$DOCKER_USERNAME/${dockerHubRepo}:latest
 
+            docker logout
         """
     }
 }
