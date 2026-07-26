@@ -15,7 +15,6 @@ def call(String imageName, String dockerHubRepo) {
 
             docker push \$DOCKER_USERNAME/${dockerHubRepo}:latest
 
-            docker logout
         """
     }
 }
