@@ -1,4 +1,4 @@
-def call(String imageName){
+def call(String imageName) {
 
     withCredentials([
         usernamePassword(
@@ -6,13 +6,14 @@ def call(String imageName){
             usernameVariable: 'DOCKER_USERNAME',
             passwordVariable: 'DOCKER_PASSWORD'
         )
-    ])
-    {
+    ]) {
+
         sh """
-            echo "\$DOCKER_PASSWORD" | docker login -u "\$DOCKER_USERNAME" --password-stdin
-            docker scout cves ${imageName} 
+            echo "\$DOCKER_PASSWORD" | docker login \
+                -u "\$DOCKER_USERNAME" \
+                --password-stdin
         """
-        
+
         def status = sh(
             script: "docker scout cves ${imageName}",
             returnStatus: true
@@ -25,5 +26,3 @@ def call(String imageName){
         }
     }
 }
-
-// Docker Scout is to Scan Images
