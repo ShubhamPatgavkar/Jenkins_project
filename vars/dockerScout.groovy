@@ -1,3 +1,3 @@
 def call(String imageName){
-    sh 'docker scout cves ${imageName}'
+     sh "docker scout cves ${imageName}"
 }
