@@ -12,6 +12,17 @@ def call(String imageName){
             echo "\$DOCKER_PASSWORD" | docker login -u "\$DOCKER_USERNAME" --password-stdin
             docker scout cves ${imageName} 
         """
+        
+        def status = sh(
+            script: "docker scout cves ${imageName}",
+            returnStatus: true
+        )
+
+        echo "Docker Scout scan completed with exit code: ${status}"
+
+        if (status != 0) {
+            echo "⚠️ Docker Scout found issues, but the pipeline will continue."
+        }
     }
 }
 
