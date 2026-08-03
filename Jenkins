@@ -1,0 +1,40 @@
+@Library('my-shared-library') _
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/ShubhamPatgavkar/Jenkins_project.git'
+            }
+        }
+
+        stage('Build Image') {
+            steps {
+                dockerBuild('python-app')
+            }
+        }
+        
+        stage('Push To DockerHub') {
+            steps {
+                dockerPush('python-app', 'python-app')
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                docker stop python-app || true
+                docker rm python-app || true
+
+                docker run -d \
+                    --name python-app \
+                    -p 8000:5000 \
+                    python-app
+                '''
+            }
+        }
+    }
+}
